@@ -1,41 +1,88 @@
 var video;
 
-window.addEventListener("load", function() {
+// page load
+window.addEventListener("load", function () {
 	console.log("Good job opening the window")
-	video=this.document.querySelector("#player1")
-	video.autoplay=false;
+	video = document.querySelector("#player1")
+	if (video) {
+		video.autoplay = false;  // Disable autoplay
+		video.loop = false;      // Disable looping
+		video.load();            // Reload video settings
+		console.log("auto play is set to false");
+		console.log("looping is set to false");
+	}
+}
+);
 
+
+// play the video
+document.querySelector("#play").addEventListener("click", function () {
+	video.play();
+	console.log("Play Video");
+	document.querySelector("#volume").innerText = video.volume * 100 + "%"
+	console.log("volume information")
 });
 
-// document.querySelector("#play").addEventListener("click", function() {
-// 	console.log("Play Video");
-// });
+// pause button
+document.querySelector("#pause").addEventListener("click", function () {
+	video.pause();
+	console.log("Video pause")
+});
 
+// Slow down playback speed
+document.querySelector("#slower").addEventListener("click", function () {
+	video.playbackRate = video.playbackRate * 0.9;
+	console.log("Video slows down");
+});
 
+// speed up
+document.querySelector("#faster").addEventListener("click", function () {
+	video.playbackRate = video.playbackRate * 1.10;
+	console.log("Video speeds up");
+});
 
+// Skip ahead 10 seconds
+document.querySelector("#skip").addEventListener("click", function () {
+	skip = video.currentTime + 10;
 
-const recipesData = [
-    {
-        id: 1,
-        name: "Pasta Primavera",
-        ingredients: ["pasta", "tomato", "zucchini", "bell pepper", "garlic", "olive oil"],
-        cookTime: "30 minutes",
-        difficulty: "Medium",
-        instructions: [
-            "Boil pasta until al dente.",
-            "In a pan, heat olive oil and sauté garlic.",
-            "Add vegetables and cook until tender.",
-            "Toss cooked pasta with sautéed vegetables."
-        ],
-        nutritionalInfo: {
-            calories: 400,
-            fat: "15g",
-            protein: "12g",
-            carbs: "55g"
-        }
-    }]
+	if (skip > video.duration) {
+		video.currentTime = 0; // Restart video if it exceeds duration
+	}
+	else {
+		video.currentTime = skip;
+	}
+	console.log("The current video time is " + video.currentTime);
+});
 
+// mute
+document.querySelector("#mute").addEventListener("click", function () {
+	if (video.muted == false) {
+		video.muted = true;
+		document.querySelector("#mute").innerText = "Unmute";
+	}
+	else {
+		video.muted = false;
+		document.querySelector("#mute").innerText = "Mute";
+	}
+	console.log("mute/unmute the video")
+});
 
+// volumn slider
+document.querySelector("#slider").addEventListener("input", function () {
+	var slider = document.querySelector("#slider");
+	video.volume = slider.value / 100; // Update video volume based on slider value
+	document.querySelector("#volume").innerText = slider.value + "%";
+});
+
+// styled
+document.querySelector("#vintage").addEventListener("click", function () {
+	video.classList.add("oldSchool");
+});
+
+//Original
+document.querySelector("#orig").addEventListener("click", function () {
+	video.classList.remove("oldSchool");
+});
 
 
 
